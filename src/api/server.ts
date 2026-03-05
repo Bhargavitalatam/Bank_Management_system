@@ -22,6 +22,17 @@ const commandHandler = new BankCommandHandler();
 const queryQueries = new AccountQueries();
 
 // Health Check
+app.get('/', (req, res) => {
+    res.status(200).send(`
+        <h1>Bank Account Management System (ES/CQRS)</h1>
+        <p>The API is <strong>Live</strong> and ready to accept requests.</p>
+        <ul>
+            <li><a href="/health">Health Check</a></li>
+            <li><a href="https://github.com/Bhargavitalatam/Bank_Management_system">GitHub Repository & API Documentation</a></li>
+        </ul>
+    `);
+});
+
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'UP' });
 });
