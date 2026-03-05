@@ -152,17 +152,26 @@ app.get('/', (req, res) => {
                 async function updateStats() {
                     try {
                         const res = await fetch('/api/projections/status');
+                        if (!res.ok) throw new Error('API Error');
                         const data = await res.json();
+                        
                         document.getElementById('stats').style.display = 'block';
-                        document.getElementById('eventCount').innerText = data.totalEventsInStore;
-                        const maxLag = Math.max(...data.projections.map(p => p.lag));
-                        document.getElementById('syncLag').innerText = maxLag;
+                        document.getElementById('eventCount').innerText = data.totalEventsInStore ?? 0;
+                        
+                        if (data.projections && data.projections.length > 0) {
+                            const lags = data.projections.map(p => p.lag || 0);
+                            document.getElementById('syncLag').innerText = Math.max(...lags);
+                        } else {
+                            document.getElementById('syncLag').innerText = '0';
+                        }
                     } catch (e) {
-                        console.error('Failed to fetch stats');
+                        console.error('Failed to fetch stats:', e);
+                        document.getElementById('eventCount').innerText = '...';
+                        document.getElementById('syncLag').innerText = '...';
                     }
                 }
-                updateStats();
-                setInterval(updateStats, 5000);
+                setTimeout(updateStats, 1000);
+                setInterval(updateStats, 10000);
             </script>
         </body>
         </html>
