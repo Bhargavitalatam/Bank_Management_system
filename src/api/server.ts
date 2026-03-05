@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { BankCommandHandler } from '../application/commands/BankCommandHandler';
 import { AccountQueries } from '../application/queries/AccountQueries';
 import { AccountProjector } from '../application/projectors/AccountProjector';
+import { initializeDatabase } from '../infrastructure/init-db';
 
 dotenv.config();
 
@@ -11,6 +12,11 @@ const app = express();
 const port = process.env.API_PORT || 3000;
 
 app.use(express.json());
+
+// Initialize DB schema
+initializeDatabase().catch(err => {
+    console.error('Failed to initialize database:', err);
+});
 
 const commandHandler = new BankCommandHandler();
 const queryQueries = new AccountQueries();
