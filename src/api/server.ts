@@ -136,8 +136,8 @@ app.get('/', (req, res) => {
                     <div class="status-dot"></div>
                     System Operational
                 </div>
-                <h1>Bank Management System <span style="font-size: 0.8rem; vertical-align: middle; color: #475569;">v1.4</span></h1>
-                <p>Advanced Event Sourcing & CQRS Account Management API. The cloud infrastructure is fully initialized and ready.</p>
+                <h1>Bank Management System <span style="font-size: 0.8rem; vertical-align: middle; color: #f43f5e;">v1.5</span></h1>
+                <p>Advanced Event Sourcing & CQRS. If you see v1.3 or v1.4, please wait 2 minutes for Render to finish the deploy.</p>
                 
                 <div id="stats" style="margin-bottom: 2rem;">
                     <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;">Live System Stats</div>

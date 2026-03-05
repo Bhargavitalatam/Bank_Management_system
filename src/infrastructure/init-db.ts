@@ -21,7 +21,7 @@ export async function initializeDatabase() {
     const colCheck = await query(`
         SELECT column_name 
         FROM information_schema.columns 
-        WHERE table_name='events' AND column_name='global_sequence'
+        WHERE table_name='events' AND column_name='global_sequence' AND table_schema='public'
     `);
 
     if (colCheck.rows.length === 0) {
