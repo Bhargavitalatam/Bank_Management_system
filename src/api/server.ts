@@ -150,27 +150,37 @@ app.get('/', (req, res) => {
             </div>
             <script>
                 async function updateStats() {
+                    const eventEl = document.getElementById('eventCount');
+                    const lagEl = document.getElementById('syncLag');
+                    
                     try {
-                        const res = await fetch('/api/projections/status');
-                        if (!res.ok) throw new Error('API Error');
-                        const data = await res.json();
+                        const baseUrl = window.location.origin;
+                        const res = await fetch(baseUrl + '/api/projections/status');
                         
-                        document.getElementById('stats').style.display = 'block';
-                        document.getElementById('eventCount').innerText = data.totalEventsInStore ?? 0;
+                        if (!res.ok) {
+                            const errorData = await res.json().catch(() => ({}));
+                            console.error('API Error:', errorData);
+                            eventEl.innerText = 'Err';
+                            lagEl.innerText = 'Err';
+                            return;
+                        }
+                        
+                        const data = await res.json();
+                        eventEl.innerText = data.totalEventsInStore ?? 0;
                         
                         if (data.projections && data.projections.length > 0) {
                             const lags = data.projections.map(p => p.lag || 0);
-                            document.getElementById('syncLag').innerText = Math.max(...lags);
+                            lagEl.innerText = Math.max(...lags);
                         } else {
-                            document.getElementById('syncLag').innerText = '0';
+                            lagEl.innerText = '0';
                         }
                     } catch (e) {
-                        console.error('Failed to fetch stats:', e);
-                        document.getElementById('eventCount').innerText = '...';
-                        document.getElementById('syncLag').innerText = '...';
+                        console.error('Fetch Failed:', e);
+                        eventEl.innerText = 'Ref...';
+                        lagEl.innerText = 'Ref...';
                     }
                 }
-                setTimeout(updateStats, 1000);
+                setTimeout(updateStats, 500);
                 setInterval(updateStats, 10000);
             </script>
         </body>
