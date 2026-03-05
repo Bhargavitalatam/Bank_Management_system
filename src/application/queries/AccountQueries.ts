@@ -65,11 +65,15 @@ export class AccountQueries {
 
         return {
             totalEventsInStore: totalEvents,
-            projections: projectionsRes.rows.map(row => ({
-                name: row.projection_name,
-                lastProcessedEventNumberGlobal: parseInt(row.last_processed_global_id),
-                lag: totalEvents - parseInt(row.last_processed_global_id)
-            }))
+            projections: projectionsRes.rows.map(row => {
+                const lastId = parseInt(row.last_processed_global_id || '0');
+                const total = totalEvents || 0;
+                return {
+                    name: row.projection_name,
+                    lastProcessedEventNumberGlobal: lastId,
+                    lag: Math.max(0, total - lastId)
+                };
+            })
         };
     }
 }
