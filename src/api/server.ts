@@ -136,8 +136,8 @@ app.get('/', (req, res) => {
                     <div class="status-dot"></div>
                     System Operational
                 </div>
-                <h1>Bank Management System <span style="font-size: 1rem; vertical-align: middle; color: #fbbf24; font-weight: 900;">v2.0 GOLD</span></h1>
-                <p>Resilient Enterprise Architecture. If you see v1.3, Render is still building. v2.0 is the FINAL version.</p>
+                <h1>Bank Management System <span style="font-size: 1rem; vertical-align: middle; color: #f43f5e; font-weight: 900;">v2.1 SURGICAL</span></h1>
+                <p>Enterprise Grade Self-Healing System. If you see v1.3 - v2.0, Render is still building. v2.1 is the FINAL fix.</p>
                 
                 <div id="stats" style="margin-bottom: 2rem;">
                     <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;">Live System Stats</div>
