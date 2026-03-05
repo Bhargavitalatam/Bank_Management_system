@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: bank-account-ms
+    env: docker
+    plan: free
+    region: oregon
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bank-db
+          property: connectionString
+      - key: DB_USER
+        fromDatabase:
+          name: bank-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: bank-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: bank-db
+          property: database
+      - key: API_PORT
+        value: 3000
+    healthCheckPath: /health
+
+databases:
+  - name: bank-db
+    plan: free
+    region: oregon
