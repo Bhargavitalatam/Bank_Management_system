@@ -17,6 +17,20 @@ export async function initializeDatabase() {
         }
     }
 
+    // Explicit migration for global_sequence if table exists but column is missing
+    const colCheck = await query(`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='events' AND column_name='global_sequence'
+    `);
+
+    if (colCheck.rows.length === 0) {
+        console.log('Migration: Adding global_sequence column to events table...');
+        await query('ALTER TABLE events ADD COLUMN global_sequence BIGSERIAL UNIQUE');
+        await query('CREATE INDEX IF NOT EXISTS idx_events_global_sequence ON events(global_sequence)');
+        console.log('Migration complete.');
+    }
+
     // Always ensure projection_status rows exist
     await query("INSERT INTO projection_status (projection_name, last_processed_global_id) VALUES ('AccountSummaries', 0), ('TransactionHistory', 0) ON CONFLICT DO NOTHING");
     console.log('Database initialization check complete.');
