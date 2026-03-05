@@ -13,10 +13,20 @@ const port = process.env.API_PORT || 3000;
 
 app.use(express.json());
 
-// Initialize DB schema
-initializeDatabase().catch(err => {
-    console.error('Failed to initialize database:', err);
-});
+// Initialize DB schema then start server
+async function startServer() {
+    try {
+        await initializeDatabase();
+        app.listen(port, () => {
+            console.log(`Server running at http://localhost:${port}`);
+        });
+    } catch (err) {
+        console.error('Failed to initialize database:', err);
+        process.exit(1);
+    }
+}
+
+startServer();
 
 const commandHandler = new BankCommandHandler();
 const queryQueries = new AccountQueries();
@@ -126,7 +136,7 @@ app.get('/', (req, res) => {
                     <div class="status-dot"></div>
                     System Operational
                 </div>
-                <h1>Bank Management System <span style="font-size: 0.8rem; vertical-align: middle; color: #475569;">v1.3</span></h1>
+                <h1>Bank Management System <span style="font-size: 0.8rem; vertical-align: middle; color: #475569;">v1.4</span></h1>
                 <p>Advanced Event Sourcing & CQRS Account Management API. The cloud infrastructure is fully initialized and ready.</p>
                 
                 <div id="stats" style="margin-bottom: 2rem;">
@@ -369,8 +379,4 @@ app.post('/api/projections/rebuild', async (req, res) => {
     } catch (e: any) {
         res.status(500).json({ error: e.message });
     }
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
 });
