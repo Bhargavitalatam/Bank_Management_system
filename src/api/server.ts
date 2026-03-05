@@ -24,12 +24,117 @@ const queryQueries = new AccountQueries();
 // Health Check
 app.get('/', (req, res) => {
     res.status(200).send(`
-        <h1>Bank Account Management System (ES/CQRS)</h1>
-        <p>The API is <strong>Live</strong> and ready to accept requests.</p>
-        <ul>
-            <li><a href="/health">Health Check</a></li>
-            <li><a href="https://github.com/Bhargavitalatam/Bank_Management_system">GitHub Repository & API Documentation</a></li>
-        </ul>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Bank Account Management System | ES/CQRS</title>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+            <style>
+                :root {
+                    --bg: #0f172a;
+                    --glass: rgba(30, 41, 59, 0.7);
+                    --accent: #38bdf8;
+                    --text: #f8fafc;
+                }
+                body {
+                    margin: 0;
+                    padding: 0;
+                    font-family: 'Inter', sans-serif;
+                    background: radial-gradient(circle at top right, #1e293b, #0f172a);
+                    color: var(--text);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                    overflow: hidden;
+                }
+                .container {
+                    background: var(--glass);
+                    backdrop-filter: blur(12px);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    padding: 3rem;
+                    border-radius: 24px;
+                    text-align: center;
+                    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+                    max-width: 500px;
+                    width: 90%;
+                    animation: fadeIn 0.8s ease-out;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                h1 {
+                    font-weight: 800;
+                    font-size: 2rem;
+                    margin-bottom: 1rem;
+                    background: linear-gradient(to right, #38bdf8, #818cf8);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+                p {
+                    color: #94a3b8;
+                    line-height: 1.6;
+                    margin-bottom: 2rem;
+                }
+                .status-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    background: rgba(34, 197, 94, 0.2);
+                    color: #4ade80;
+                    padding: 0.5rem 1rem;
+                    border-radius: 99px;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    margin-bottom: 2rem;
+                    border: 1px solid rgba(74, 222, 128, 0.2);
+                }
+                .status-dot {
+                    width: 8px;
+                    height: 8px;
+                    background: #22c55e;
+                    border-radius: 50%;
+                    margin-right: 8px;
+                    box-shadow: 0 0 10px #22c55e;
+                }
+                .links {
+                    display: grid;
+                    gap: 1rem;
+                }
+                a {
+                    text-decoration: none;
+                    color: white;
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 1rem;
+                    border-radius: 12px;
+                    transition: all 0.3s ease;
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    font-weight: 600;
+                }
+                a:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                    border-color: var(--accent);
+                    transform: scale(1.02);
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    System Operational
+                </div>
+                <h1>Bank Management System</h1>
+                <p>Advanced Event Sourcing & CQRS Account Management API. The cloud infrastructure is fully initialized and ready.</p>
+                <div class="links">
+                    <a href="/health">Health Status</a>
+                    <a href="https://github.com/Bhargavitalatam/Bank_Management_system" target="_blank">API Documentation</a>
+                </div>
+            </div>
+        </body>
+        </html>
     `);
 });
 
