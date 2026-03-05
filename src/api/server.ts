@@ -159,14 +159,17 @@ app.get('/', (req, res) => {
                         
                         if (!res.ok) {
                             const errorData = await res.json().catch(() => ({}));
+                            const msg = errorData.error || 'API 500';
                             console.error('API Error:', errorData);
-                            eventEl.innerText = 'Err';
-                            lagEl.innerText = 'Err';
+                            eventEl.innerText = 'Error';
+                            lagEl.innerText = msg;
+                            lagEl.style.fontSize = '0.5rem'; // Shrink to fit error message
                             return;
                         }
                         
                         const data = await res.json();
                         eventEl.innerText = data.totalEventsInStore ?? 0;
+                        lagEl.style.fontSize = '1.5rem'; // Restore font size
                         
                         if (data.projections && data.projections.length > 0) {
                             const lags = data.projections.map(p => p.lag || 0);
@@ -176,8 +179,9 @@ app.get('/', (req, res) => {
                         }
                     } catch (e) {
                         console.error('Fetch Failed:', e);
-                        eventEl.innerText = 'Ref...';
-                        lagEl.innerText = 'Ref...';
+                        eventEl.innerText = 'Offline';
+                        lagEl.innerText = 'Check WiFi';
+                        lagEl.style.fontSize = '0.5rem';
                     }
                 }
                 setTimeout(updateStats, 500);
