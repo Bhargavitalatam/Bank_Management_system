@@ -58,8 +58,14 @@ export class AccountQueries {
     }
 
     async getProjectionStatus() {
-        const totalEventsRes = await query('SELECT MAX(global_sequence) as max_seq FROM events');
-        const totalEvents = parseInt(totalEventsRes.rows[0].max_seq || '0');
+        let totalEvents = 0;
+        try {
+            const totalEventsRes = await query('SELECT MAX(global_sequence) as max_seq FROM events');
+            totalEvents = parseInt(totalEventsRes.rows[0].max_seq || '0');
+        } catch (err) {
+            console.error('Migration Lag: global_sequence not ready yet.');
+            totalEvents = 0;
+        }
 
         const projectionsRes = await query('SELECT * FROM projection_status');
 
