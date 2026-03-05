@@ -126,7 +126,7 @@ app.get('/', (req, res) => {
                     <div class="status-dot"></div>
                     System Operational
                 </div>
-                <h1>Bank Management System</h1>
+                <h1>Bank Management System <span style="font-size: 0.8rem; vertical-align: middle; color: #475569;">v1.3</span></h1>
                 <p>Advanced Event Sourcing & CQRS Account Management API. The cloud infrastructure is fully initialized and ready.</p>
                 
                 <div id="stats" style="margin-bottom: 2rem;">
@@ -143,6 +143,10 @@ app.get('/', (req, res) => {
                     </div>
                 </div>
 
+                <div id="errorLog" style="display: none; background: rgba(239, 68, 68, 0.1); color: #f87171; font-size: 0.7rem; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid rgba(239, 68, 68, 0.2); text-align: left; overflow-x: auto;">
+                    <strong>Debug Log:</strong> <span id="errorMsg"></span>
+                </div>
+
                 <div class="links">
                     <a href="/health">Health Status</a>
                     <a href="https://github.com/Bhargavitalatam/Bank_Management_system" target="_blank">API Documentation</a>
@@ -152,24 +156,26 @@ app.get('/', (req, res) => {
                 async function updateStats() {
                     const eventEl = document.getElementById('eventCount');
                     const lagEl = document.getElementById('syncLag');
+                    const errorLog = document.getElementById('errorLog');
+                    const errorMsg = document.getElementById('errorMsg');
                     
                     try {
                         const baseUrl = window.location.origin;
                         const res = await fetch(baseUrl + '/api/projections/status');
                         
                         if (!res.ok) {
-                            const errorData = await res.json().catch(() => ({}));
-                            const msg = errorData.error || 'API 500';
-                            console.error('API Error:', errorData);
+                            const errorData = await res.json().catch(() => ({ error: 'Unknown API 500' }));
                             eventEl.innerText = 'Error';
-                            lagEl.innerText = msg;
-                            lagEl.style.fontSize = '0.5rem'; // Shrink to fit error message
+                            lagEl.innerText = 'Err';
+                            errorLog.style.display = 'block';
+                            errorMsg.innerText = errorData.error || 'Server error';
                             return;
                         }
                         
                         const data = await res.json();
                         eventEl.innerText = data.totalEventsInStore ?? 0;
-                        lagEl.style.fontSize = '1.5rem'; // Restore font size
+                        lagEl.style.fontSize = '1.5rem';
+                        errorLog.style.display = 'none';
                         
                         if (data.projections && data.projections.length > 0) {
                             const lags = data.projections.map(p => p.lag || 0);
@@ -178,13 +184,13 @@ app.get('/', (req, res) => {
                             lagEl.innerText = '0';
                         }
                     } catch (e) {
-                        console.error('Fetch Failed:', e);
                         eventEl.innerText = 'Offline';
-                        lagEl.innerText = 'Check WiFi';
-                        lagEl.style.fontSize = '0.5rem';
+                        lagEl.innerText = 'Offline';
+                        errorLog.style.display = 'block';
+                        errorMsg.innerText = e.message;
                     }
                 }
-                setTimeout(updateStats, 500);
+                setTimeout(updateStats, 1000);
                 setInterval(updateStats, 10000);
             </script>
         </body>

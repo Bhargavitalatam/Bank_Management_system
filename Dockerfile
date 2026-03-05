@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN npm run build || echo "Skip build for now"
+RUN npm run build
 
 EXPOSE 3000
 
