@@ -129,15 +129,15 @@ app.get('/', (req, res) => {
                 <h1>Bank Management System</h1>
                 <p>Advanced Event Sourcing & CQRS Account Management API. The cloud infrastructure is fully initialized and ready.</p>
                 
-                <div id="stats" style="margin-bottom: 2rem; display: none;">
+                <div id="stats" style="margin-bottom: 2rem;">
                     <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;">Live System Stats</div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                            <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);" id="eventCount">-</div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);" id="eventCount">...</div>
                             <div style="font-size: 0.7rem; color: #94a3b8;">Total Events</div>
                         </div>
                         <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                            <div style="font-size: 1.5rem; font-weight: 800; color: #4ade80;" id="syncLag">0</div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: #4ade80;" id="syncLag">...</div>
                             <div style="font-size: 0.7rem; color: #94a3b8;">Sync Lag</div>
                         </div>
                     </div>
