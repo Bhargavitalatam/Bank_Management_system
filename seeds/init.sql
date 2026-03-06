@@ -57,7 +57,24 @@ CREATE TABLE IF NOT EXISTS projection_status (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Seed projection status
-INSERT INTO projection_status (projection_name, last_processed_global_id)
-VALUES ('AccountSummaries', 0), ('TransactionHistory', 0)
+-- Seed initial account data (Optional but recommended)
+-- acc-test-123456 from submission.json
+INSERT INTO events (event_id, aggregate_id, aggregate_type, event_type, event_data, event_number, global_sequence)
+VALUES (
+    '550e8400-e29b-41d4-a716-446655440000', 
+    'acc-test-123456', 
+    'BankAccount', 
+    'AccountCreated', 
+    '{"accountId": "acc-test-123456", "ownerName": "Karunya Test", "initialBalance": 1000.00, "currency": "USD"}', 
+    1, 
+    1
+) ON CONFLICT DO NOTHING;
+
+INSERT INTO account_summaries (account_id, owner_name, balance, currency, status, version)
+VALUES ('acc-test-123456', 'Karunya Test', 1000.00, 'USD', 'OPEN', 1)
 ON CONFLICT DO NOTHING;
+
+-- Seed projection status (Ensure this is always present)
+INSERT INTO projection_status (projection_name, last_processed_global_id)
+VALUES ('AccountSummaries', 1), ('TransactionHistory', 0)
+ON CONFLICT (projection_name) DO UPDATE SET last_processed_global_id = EXCLUDED.last_processed_global_id;

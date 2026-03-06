@@ -7,6 +7,37 @@ A robust, production-ready bank account management API built using **Event Sourc
 - **Aggregate Pattern**: The `BankAccount` aggregate handles business rules and reconstructs its state by replaying events or loading from an optimized snapshot.
 - **Snapshots**: High-frequency snapshotting (every 50 events) ensures fast aggregate restoration regardless of event stream length.
 - **Synchronous Projections**: Read models (`account_summaries`, `transaction_history`) are updated synchronously for immediate consistency in this implementation.
+
+## Testing the Live Demo
+
+You can interact with the live system using `curl` or any API client. Use the `testAccountId` from `submission.json` (`acc-test-123456`) to see historical data seeded in the demo.
+
+### 1. Create a New Account
+```bash
+curl -X POST https://bank-account-ms.onrender.com/api/accounts \
+  -H "Content-Type: application/json" \
+  -d '{"accountId": "my-new-acc-001", "ownerName": "John Doe", "initialBalance": 500.00, "currency": "USD"}'
+```
+
+### 2. Deposit Money
+```bash
+curl -X POST https://bank-account-ms.onrender.com/api/accounts/my-new-acc-001/deposit \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 250.00, "description": "Gift", "transactionId": "tx-999"}'
+```
+
+### 3. Check Account Status (Read Model)
+```bash
+curl https://bank-account-ms.onrender.com/api/accounts/my-new-acc-001
+```
+
+### 4. Time-Travel Query
+```bash
+# Replace with a real timestamp from your event log
+curl https://bank-account-ms.onrender.com/api/accounts/my-new-acc-001/balance-at/2026-03-06T00:00:00Z
+```
+
+## Local Development
 - **Auditability**: Complete, immutable history of all system events.
 
 ## Features
