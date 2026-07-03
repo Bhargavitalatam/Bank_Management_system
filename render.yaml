@@ -23,6 +23,8 @@ services:
           property: database
       - key: API_PORT
         value: 3000
+      - key: NODE_ENV
+        value: production
     healthCheckPath: /health
 
 databases:

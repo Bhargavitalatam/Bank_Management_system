@@ -2,8 +2,30 @@ import { query } from './db';
 import fs from 'fs';
 import path from 'path';
 
+function wait(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export async function initializeDatabase() {
     console.log('--- Database Surgical Sync Starting ---');
+
+    const maxAttempts = Number(process.env.DB_INIT_MAX_ATTEMPTS || 10);
+    const retryDelayMs = Number(process.env.DB_INIT_RETRY_DELAY_MS || 3000);
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        try {
+            await query('SELECT 1');
+            break;
+        } catch (error) {
+            if (attempt === maxAttempts) {
+                console.warn('Database is not reachable yet. Continuing without blocking startup.', error);
+                return;
+            }
+
+            console.warn(`Database unavailable (attempt ${attempt}/${maxAttempts}). Retrying in ${retryDelayMs}ms...`);
+            await wait(retryDelayMs);
+        }
+    }
 
     // 1. Ensure events table exists first
     const eventsExist = await query("SELECT to_regclass('public.events')");

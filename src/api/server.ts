@@ -17,13 +17,13 @@ app.use(express.json());
 async function startServer() {
     try {
         await initializeDatabase();
-        app.listen(port, () => {
-            console.log(`Server running at http://localhost:${port}`);
-        });
     } catch (err) {
         console.error('Failed to initialize database:', err);
-        process.exit(1);
     }
+
+    app.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+    });
 }
 
 startServer();
